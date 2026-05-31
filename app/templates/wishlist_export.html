@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ wishlist.title }}</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-size: 12px;
+            line-height: 1.4;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 1rem;
+            color: #111;
+        }
+        h1 { font-size: 1.4rem; margin-bottom: 0.2rem; }
+        .meta { color: #555; margin-bottom: 1rem; font-size: 0.9em; }
+        table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
+        th, td { border: 1px solid #ccc; padding: 4px 8px; text-align: left; vertical-align: top; }
+        th { background: #f5f5f5; font-size: 0.85em; }
+        td { font-size: 0.85em; }
+        .reserved { color: #555; font-style: italic; }
+        .no-res { color: #999; }
+        a { color: #111; }
+        @media print {
+            body { padding: 0; }
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ wishlist.title }}</h1>
+    <p class="meta">{{ t.export_date }}: {{ export_date }} · {{ items|length }} {{ t.export_items_label }}</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width:5%">#</th>
+                <th style="width:35%">{{ t.export_col_item }}</th>
+                <th style="width:15%">{{ t.export_col_price }}</th>
+                <th style="width:25%">{{ t.export_col_reserved }}</th>
+                <th style="width:20%">{{ t.export_col_links }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>
+                    <strong>{{ item.title }}</strong>
+                    {% if item.description %}<br><small>{{ item.description }}</small>{% endif %}
+                </td>
+                <td>{{ item.price_hint or "–" }}</td>
+                <td>
+                    {% set active_res = item.active_reservations %}
+                    {% if active_res %}
+                    <span class="reserved">
+                        {% for res in active_res %}{{ res.guest_name }}{% if not loop.last %}, {% endif %}{% endfor %}
+                    </span>
+                    {% else %}
+                    <span class="no-res">–</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if item.url %}<a href="{{ item.url }}">{{ item.url | domain }}</a>{% endif %}
+                    {% if item.url2 %}{% if item.url %}<br>{% endif %}<a href="{{ item.url2 }}">{{ item.url2 | domain }}</a>{% endif %}
+                    {% if item.url3 %}{% if item.url or item.url2 %}<br>{% endif %}<a href="{{ item.url3 }}">{{ item.url3 | domain }}</a>{% endif %}
+                    {% if not item.url and not item.url2 and not item.url3 %}–{% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

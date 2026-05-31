@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t.home_title }}{% endblock %}
+
+{% block content %}
+<article>
+    <header>
+        <h1>{{ t.home_title }}</h1>
+        <p>{{ t.home_intro }}</p>
+    </header>
+
+    <form method="post" action="/wishlists">
+        <label for="title">
+            {{ t.home_field_title }}
+            <input type="text" id="title" name="title" placeholder="{{ t.home_field_title_placeholder }}" required maxlength="255">
+        </label>
+
+        <label for="parent_email">
+            {{ t.home_field_email }}
+            <input type="email" id="parent_email" name="parent_email" placeholder="{{ t.home_field_email_placeholder }}">
+            <small>{{ t.home_field_email_hint }}</small>
+        </label>
+
+        <button type="submit">{{ t.home_submit }}</button>
+    </form>
+</article>
+
+<article>
+    <header>
+        <h2>{{ t.home_how_title }}</h2>
+    </header>
+    <ol>
+        <li><strong>{{ t.home_step_1_label }}</strong> — {{ t.home_step_1 }}</li>
+        <li><strong>{{ t.home_step_2_label }}</strong> — {{ t.home_step_2 }}</li>
+        <li><strong>{{ t.home_step_3_label }}</strong> — {{ t.home_step_3 }}</li>
+        <li><strong>{{ t.home_step_4_label }}</strong> — {{ t.home_step_4 }}</li>
+    </ol>
+    <p><small>{{ t.home_privacy_note }}</small></p>
+</article>
+{% endblock %}

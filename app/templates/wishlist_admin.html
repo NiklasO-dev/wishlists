@@ -1,0 +1,239 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t.admin_title_prefix }}: {{ wishlist.title }}{% endblock %}
+
+{% block content %}
+{% if wishlist.is_done %}
+<article>
+    <header>
+        <h1>{{ wishlist.title }}</h1>
+        <p><mark>{{ t.admin_done_message }}</mark></p>
+    </header>
+    <p>{{ t.admin_done_text }}</p>
+</article>
+{% else %}
+
+<!-- Title + Share links on same row -->
+<article>
+    <div class="admin-header-row">
+        <div class="admin-header-title">
+            <h1>{{ wishlist.title }}</h1>
+            <p>{{ t.admin_subtitle }}</p>
+            <details>
+                <summary>{{ t.admin_edit_title }}</summary>
+                <form method="post" action="/list/admin/{{ wishlist.admin_token }}/title">
+                    <label for="title">
+                        {{ t.admin_new_title }}
+                        <input type="text" id="title" name="title" value="{{ wishlist.title }}" required maxlength="255">
+                    </label>
+                    <button type="submit">{{ t.admin_update_title }}</button>
+                </form>
+            </details>
+        </div>
+        <div class="admin-header-links">
+            <label><strong>{{ t.admin_guest_link }}</strong> ({{ t.admin_guest_link_hint }})</label>
+            <div class="copy-row">
+                <input type="text" value="{{ guest_url }}" readonly>
+                <button type="button" class="copy-btn outline secondary" data-url="{{ guest_url }}" title="Copy link">📋</button>
+            </div>
+            <label><strong>{{ t.admin_link }}</strong> ({{ t.admin_link_hint }})</label>
+            <div class="copy-row">
+                <input type="text" value="{{ admin_url }}" readonly>
+                <button type="button" class="copy-btn outline secondary" data-url="{{ admin_url }}" title="Copy link">📋</button>
+            </div>
+        </div>
+    </div>
+    <p><small>{{ t.admin_expires_on }} <strong>{{ expires_at.strftime('%d.%m.%Y') }}</strong>.
+    {% if not wishlist.deletion_extended %}
+    <form method="post" action="/list/admin/{{ wishlist.admin_token }}/extend" style="display:inline;">
+        <button type="submit" class="outline secondary" style="display:inline; padding: 0.2rem 0.5rem; font-size: 0.8rem;">{{ t.admin_extend_btn.replace('{days}', settings.wishlist_extension_days|string) }}</button>
+    </form>
+    {% else %}
+    ({{ t.admin_already_extended }})
+    {% endif %}
+    </small></p>
+    <a href="/list/admin/{{ wishlist.admin_token }}/export" target="_blank" class="outline secondary" role="button" style="padding: 0.3rem 0.7rem; font-size: 0.8rem;">{{ t.admin_export_btn }} ↗</a>
+    <a href="/list/admin/{{ wishlist.admin_token }}/share" class="outline secondary" role="button" style="padding: 0.3rem 0.7rem; font-size: 0.8rem;">{{ t.admin_share_btn }}</a>
+</article>
+
+<!-- Settings -->
+<article>
+    <header><h2>{{ t.admin_settings }}</h2></header>
+    <form method="post" action="/list/admin/{{ wishlist.admin_token }}/toggle-show-buyers">
+        <label>
+            <input type="checkbox" name="show_buyers" {{ "checked" if wishlist.show_buyers_to_guests else "" }} onchange="this.form.submit()">
+            {{ t.admin_show_buyers }}
+        </label>
+        <small>{{ t.admin_show_buyers_hint }}</small>
+    </form>
+</article>
+
+<!-- Add item -->
+<article>
+    <header><h2>{{ t.admin_add_item }}</h2></header>
+    <form method="post" action="/list/admin/{{ wishlist.admin_token }}/items">
+        <div class="grid">
+            <label for="item_title">
+                {{ t.admin_item_name }} *
+                <input type="text" id="item_title" name="title" required maxlength="255" placeholder="e.g. Lego Space Set">
+            </label>
+            <label for="item_price">
+                {{ t.admin_price_hint }}
+                <input type="text" id="item_price" name="price_hint" maxlength="100" placeholder="{{ t.admin_price_placeholder }}">
+            </label>
+        </div>
+        <div class="grid">
+            <label for="item_url">
+                {{ t.admin_url_1 }}
+                <input type="url" id="item_url" name="url" maxlength="500" placeholder="https://shop1.example.com/...">
+            </label>
+            <label for="item_url2">
+                {{ t.admin_url_2 }}
+                <input type="url" id="item_url2" name="url2" maxlength="500" placeholder="https://shop2.example.com/...">
+            </label>
+            <label for="item_url3">
+                {{ t.admin_url_3 }}
+                <input type="url" id="item_url3" name="url3" maxlength="500" placeholder="https://shop3.example.com/...">
+            </label>
+        </div>
+        <label for="item_desc">
+            {{ t.admin_description }}
+            <textarea id="item_desc" name="description" rows="2" placeholder="{{ t.admin_description_placeholder }}"></textarea>
+        </label>
+        <button type="submit">{{ t.admin_submit_item }}</button>
+    </form>
+</article>
+
+<!-- Items list -->
+<article>
+    <header><h2>{{ t.admin_items_header }} ({{ items|length }})</h2></header>
+    {% if items %}
+    <div id="sortable-items">
+    {% for item in items %}
+    <article data-item-id="{{ item.id }}" class="sortable-item">
+        <header>
+            <span class="drag-handle" title="{{ t.admin_drag_hint }}">⠿</span>
+            <strong>{{ item.title }}</strong>
+            {% if item.price_hint %}<small> — {{ item.price_hint }}</small>{% endif %}
+        </header>
+        {% if item.description %}<p>{{ item.description }}</p>{% endif %}
+        {% if item.url or item.url2 or item.url3 %}
+        <p>
+            {% if item.url %}<a href="{{ item.url }}" target="_blank" rel="noopener">{{ t.admin_link_1 }}</a>{% endif %}
+            {% if item.url2 %} · <a href="{{ item.url2 }}" target="_blank" rel="noopener">{{ t.admin_link_2 }}</a>{% endif %}
+            {% if item.url3 %} · <a href="{{ item.url3 }}" target="_blank" rel="noopener">{{ t.admin_link_3 }}</a>{% endif %}
+        </p>
+        {% endif %}
+
+        <!-- Reservations -->
+        {% set active_res = item.active_reservations %}
+        {% if active_res %}
+        <p><strong>{{ t.admin_reserved_by }}</strong></p>
+        <ol>
+            {% for res in active_res %}
+            <li>
+                <span class="reservation-row">
+                    <span>{{ res.guest_name }}</span>
+                    <form method="post" action="/list/admin/{{ wishlist.admin_token }}/reservations/{{ res.id }}/delete">
+                        <button type="submit" class="outline secondary remove-btn">✕</button>
+                    </form>
+                </span>
+            </li>
+            {% endfor %}
+        </ol>
+        {% else %}
+        <p><small>{{ t.admin_no_reservations }}</small></p>
+        {% endif %}
+
+        <!-- Edit / Delete -->
+        <details>
+            <summary>{{ t.admin_edit_item }}</summary>
+            <form method="post" action="/list/admin/{{ wishlist.admin_token }}/items/{{ item.id }}/edit">
+                <label>{{ t.admin_item_name }} <input type="text" name="title" value="{{ item.title }}" required></label>
+                <label>{{ t.admin_description }} <textarea name="description" rows="2">{{ item.description or '' }}</textarea></label>
+                <div class="grid">
+                    <label>{{ t.admin_url_1 }} <input type="url" name="url" value="{{ item.url or '' }}"></label>
+                    <label>{{ t.admin_url_2 }} <input type="url" name="url2" value="{{ item.url2 or '' }}"></label>
+                    <label>{{ t.admin_url_3 }} <input type="url" name="url3" value="{{ item.url3 or '' }}"></label>
+                </div>
+                <label>{{ t.admin_price_hint }} <input type="text" name="price_hint" value="{{ item.price_hint or '' }}"></label>
+                <button type="submit">{{ t.admin_save_changes }}</button>
+            </form>
+        </details>
+        <form method="post" action="/list/admin/{{ wishlist.admin_token }}/items/{{ item.id }}/delete">
+            <button type="submit" class="outline contrast">{{ t.admin_delete_item }}</button>
+        </form>
+    </article>
+    {% endfor %}
+    </div>
+    <form id="reorder-form" method="post" action="/list/admin/{{ wishlist.admin_token }}/items/reorder" style="display:none;">
+        <input type="hidden" name="order" id="reorder-input">
+    </form>
+    {% else %}
+    <p>{{ t.guest_no_items }}</p>
+    {% endif %}
+</article>
+
+<!-- Mark as done / Delete -->
+<article>
+    <header><h2>{{ t.admin_finish_title }}</h2></header>
+    <p>{{ t.admin_finish_text }}</p>
+    <form method="post" action="/list/admin/{{ wishlist.admin_token }}/done">
+        <button type="submit" class="contrast">{{ t.admin_mark_done }}</button>
+    </form>
+    <hr>
+    <p><strong>{{ t.admin_delete_title }}</strong> — {{ t.admin_delete_warning }}</p>
+    <form method="post" action="/list/admin/{{ wishlist.admin_token }}/delete" onsubmit="return confirm('{{ t.admin_delete_confirm }}');">
+        <button type="submit" class="outline contrast">{{ t.admin_delete_btn }}</button>
+    </form>
+</article>
+
+{% endif %}
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // --- Scroll position restoration ---
+    var scrollKey = 'wishlist_admin_scroll';
+    var savedScroll = sessionStorage.getItem(scrollKey);
+    if (savedScroll) {
+        window.scrollTo(0, parseInt(savedScroll, 10));
+        sessionStorage.removeItem(scrollKey);
+    }
+    // Save scroll position before any form submission
+    document.querySelectorAll('form').forEach(function(form) {
+        form.addEventListener('submit', function() {
+            sessionStorage.setItem(scrollKey, window.scrollY.toString());
+        });
+    });
+
+    // Copy buttons
+    document.querySelectorAll('.copy-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var url = btn.getAttribute('data-url');
+            navigator.clipboard.writeText(url).then(function() {
+                btn.textContent = '✓';
+                setTimeout(function() { btn.textContent = '📋'; }, 1500);
+            });
+        });
+    });
+
+    // Drag-and-drop sorting
+    var sortableContainer = document.getElementById('sortable-items');
+    if (sortableContainer) {
+        var sortable = Sortable.create(sortableContainer, {
+            animation: 150,
+            handle: '.drag-handle',
+            ghostClass: 'sortable-ghost',
+            onEnd: function() {
+                sessionStorage.setItem(scrollKey, window.scrollY.toString());
+                var items = sortableContainer.querySelectorAll('.sortable-item');
+                var ids = Array.from(items).map(function(el) { return el.getAttribute('data-item-id'); });
+                document.getElementById('reorder-input').value = ids.join(',');
+                document.getElementById('reorder-form').submit();
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

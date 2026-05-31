@@ -1,0 +1,22 @@
+services:
+  wishlist-app:
+    build: .
+    container_name: wishlist-app
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: "sqlite+aiosqlite:////data/wishlist.db"
+    volumes:
+      - wishlist_data:/data
+    ports:
+      - "8000:8000"
+    networks:
+      - caddy
+
+volumes:
+  wishlist_data:
+
+networks:
+  caddy:
+    external: true
