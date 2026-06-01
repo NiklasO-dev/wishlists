@@ -87,11 +87,7 @@ async def admin_page(
         f"{settings.app_base_url}/list/admin", wishlist.admin_token, key, False
     )
 
-    max_days = settings.wishlist_max_age_days
-    if wishlist.deletion_extended:
-        max_days += settings.wishlist_extension_days
-
-    expires_at = wishlist.created_at + timedelta(days=max_days)
+    expires_at = wishlist.created_at + timedelta(days=settings.wishlist_max_age_days)
     active_items = [i for i in wishlist.items if not i.is_removed]
 
     return templates.TemplateResponse(
@@ -106,7 +102,6 @@ async def admin_page(
             "admin_url_without_key": admin_url_without_key,
             "encryption_key": key,
             "show_key_reveal": show_key_reveal,
-            "max_days": max_days,
             "expires_at": expires_at,
             "settings": settings,
         },
@@ -327,25 +322,6 @@ async def mark_done(
         return RedirectResponse(url=f"/list/admin/{admin_token}", status_code=303)
 
     wishlist.done_at = datetime.now(timezone.utc)
-    await db.commit()
-    return redirect_with_key(f"/list/admin/{admin_token}", key)
-
-
-@router.post("/{admin_token}/extend")
-async def extend_deletion(
-    request: Request,
-    admin_token: str,
-    db: AsyncSession = Depends(get_db),
-):
-    wishlist = await get_wishlist_by_admin_token(admin_token, db)
-    if not wishlist or wishlist.deletion_extended:
-        return RedirectResponse(url=f"/list/admin/{admin_token}", status_code=303)
-
-    key = await _require_valid_key(request, wishlist)
-    if not key:
-        return RedirectResponse(url=f"/list/admin/{admin_token}", status_code=303)
-
-    wishlist.deletion_extended = True
     await db.commit()
     return redirect_with_key(f"/list/admin/{admin_token}", key)
 

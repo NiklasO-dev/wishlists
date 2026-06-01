@@ -3,20 +3,6 @@
 {% block title %}{{ t.admin_title_prefix }}: {{ wishlist.title }}{% endblock %}
 
 {% block content %}
-{% if show_key_reveal %}
-<article>
-    <header>
-        <h2>{{ t.admin_key_reveal_title }}</h2>
-    </header>
-    <p>{{ t.admin_key_reveal_text }}</p>
-    <div class="copy-row">
-        <input type="text" value="{{ encryption_key }}" readonly id="revealed-key">
-        <button type="button" class="copy-btn outline secondary" data-url="{{ encryption_key }}" title="Copy key">📋</button>
-    </div>
-    <p><small>{{ t.admin_key_reveal_hint }}</small></p>
-</article>
-{% endif %}
-
 {% if wishlist.is_done %}
 <article>
     <header>
@@ -50,6 +36,15 @@
                 <input type="checkbox" id="include-key-toggle" checked>
                 {{ t.admin_include_key_in_links }}
             </label>
+            <label><strong>{{ t.admin_encryption_key }}</strong></label>
+            {% if show_key_reveal %}
+            <p><mark>{{ t.admin_key_reveal_text }}</mark></p>
+            {% endif %}
+            <div class="copy-row">
+                <input type="text" id="encryption-key-input" value="{{ encryption_key }}" readonly>
+                <button type="button" class="copy-btn outline secondary" data-target="encryption-key-input" title="{{ t.admin_copy_key }}">📋</button>
+            </div>
+            <small>{{ t.admin_encryption_key_hint }}</small>
             <label><strong>{{ t.admin_guest_link }}</strong> ({{ t.admin_guest_link_hint }})</label>
             <div class="copy-row">
                 <input type="text" id="guest-url-input" value="{{ guest_url_with_key }}" readonly
@@ -66,16 +61,7 @@
             </div>
         </div>
     </div>
-    <p><small>{{ t.admin_expires_on }} <strong>{{ expires_at.strftime('%d.%m.%Y') }}</strong>.
-    {% if not wishlist.deletion_extended %}
-    <form method="post" action="/list/admin/{{ wishlist.admin_token }}/extend" style="display:inline;">
-        <input type="hidden" name="key" value="{{ encryption_key }}">
-        <button type="submit" class="outline secondary" style="display:inline; padding: 0.2rem 0.5rem; font-size: 0.8rem;">{{ t.admin_extend_btn.replace('{days}', settings.wishlist_extension_days|string) }}</button>
-    </form>
-    {% else %}
-    ({{ t.admin_already_extended }})
-    {% endif %}
-    </small></p>
+    <p><small>{{ t.admin_expires_on }} <strong>{{ expires_at.strftime('%d.%m.%Y') }}</strong>.</small></p>
     <a href="/list/admin/{{ wishlist.admin_token }}/export?key={{ encryption_key | urlencode }}" target="_blank" class="outline secondary" role="button" style="padding: 0.3rem 0.7rem; font-size: 0.8rem;">{{ t.admin_export_btn }} ↗</a>
     <a href="/list/admin/{{ wishlist.admin_token }}/share?key={{ encryption_key | urlencode }}" class="outline secondary" role="button" style="padding: 0.3rem 0.7rem; font-size: 0.8rem;">{{ t.admin_share_btn }}</a>
 </article>

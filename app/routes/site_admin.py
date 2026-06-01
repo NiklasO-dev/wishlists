@@ -51,25 +51,7 @@ async def run_cleanup(db: AsyncSession) -> dict:
         .where(Wishlist.done_at.is_(None), Wishlist.created_at < max_age_cutoff)
     )
     expired_active = result.scalars().all()
-
-    # Also check extended wishlists
-    extended_cutoff = now - timedelta(
-        days=settings.wishlist_max_age_days + settings.wishlist_extension_days
-    )
-    result = await db.execute(
-        select(Wishlist)
-        .options(selectinload(Wishlist.items))
-        .where(
-            Wishlist.done_at.is_(None),
-            Wishlist.deletion_extended.is_(True),
-            Wishlist.created_at < extended_cutoff,
-        )
-    )
-    expired_extended = result.scalars().all()
-
-    # Filter: non-extended expired + extended expired
-    to_delete = [w for w in expired_active if not w.deletion_extended]
-    to_delete += list(expired_extended)
+    to_delete = list(expired_active)
 
     # 2. Done wishlists past cleanup period
     done_cutoff = now - timedelta(days=settings.done_wishlist_cleanup_days)

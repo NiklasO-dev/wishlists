@@ -42,6 +42,9 @@
     "unlock_error_invalid": "Ungültiger Verschlüsselungsschlüssel.",
 
     "admin_include_key_in_links": "Verschlüsselungsschlüssel in Links einbinden",
+    "admin_encryption_key": "Verschlüsselungsschlüssel",
+    "admin_encryption_key_hint": "Teile diesen Schlüssel separat, wenn Links ihn nicht enthalten. Gäste brauchen ihn zum Entsperren der Liste.",
+    "admin_copy_key": "Verschlüsselungsschlüssel kopieren",
     "admin_key_reveal_title": "Verschlüsselungsschlüssel speichern",
     "admin_key_reveal_text": "Deine Wunschliste wurde auf verschlüsselte Speicherung umgestellt. Speichere diesen Schlüssel — du brauchst ihn, wenn der Link keinen Schlüssel enthält.",
     "admin_key_reveal_hint": "Links auf dieser Seite enthalten standardmäßig den Schlüssel. Deaktiviere die Option unten, um Links ohne Schlüssel zu teilen.",
@@ -56,8 +59,6 @@
     "admin_link": "Admin-Link",
     "admin_link_hint": "geheim halten!",
     "admin_expires_on": "Diese Wunschliste wird automatisch gelöscht am",
-    "admin_extend_btn": "Um {days} Tage verlängern",
-    "admin_already_extended": "Bereits verlängert",
     "admin_settings": "Einstellungen",
     "admin_show_buyers": "Käufernamen für alle Gäste anzeigen",
     "admin_show_buyers_hint": "Wenn aktiviert, sehen Gäste wer welches Geschenk reserviert hat, statt nur \"Bereits von jemandem geplant\".",
@@ -176,5 +177,5 @@
     "privacy_not_stored_accounts": "Keine Benutzerkonten, Passwörter oder Login-Profile für Eltern oder Gäste.",
     "privacy_not_stored_tracking": "Keine Analyse-, Werbe- oder Tracking-Dienste Dritter.",
     "privacy_retention_title": "Datenaufbewahrung",
-    "privacy_retention_text": "Aktive Wunschlisten werden nach {days} Tagen automatisch gelöscht. Als erledigt markierte Listen werden {done_days} Tage nach Abschluss gelöscht. Eltern können die Aufbewahrung einmal verlängern."
+    "privacy_retention_text": "Aktive Wunschlisten werden nach {days} Tagen automatisch gelöscht. Als erledigt markierte Listen werden {done_days} Tage nach Abschluss gelöscht."
 }

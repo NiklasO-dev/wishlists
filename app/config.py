@@ -17,8 +17,6 @@ class Settings(BaseSettings):
     wishlist_max_age_days: int = 548
     # Done wishlists are deleted after this many days
     done_wishlist_cleanup_days: int = 30
-    # Extension days when parent pushes deletion date
-    wishlist_extension_days: int = 90
 
     model_config = {"env_file": ".env", "extra": "ignore"}
 

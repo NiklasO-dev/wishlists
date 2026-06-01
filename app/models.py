@@ -39,7 +39,6 @@ class Wishlist(Base):
         DateTime(timezone=True), server_default=func.now(), default=utcnow, onupdate=utcnow
     )
     done_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
-    deletion_extended: Mapped[bool] = mapped_column(default=False)
     show_buyers_to_guests: Mapped[bool] = mapped_column(default=False)
 
     items: Mapped[list["Item"]] = relationship(
@@ -60,8 +59,6 @@ class Wishlist(Base):
         if base.tzinfo is None:
             base = base.replace(tzinfo=timezone.utc)
         days = settings.wishlist_max_age_days
-        if self.deletion_extended:
-            days += settings.wishlist_extension_days
         return base + timedelta(days=days)
 
 

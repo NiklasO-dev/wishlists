@@ -42,6 +42,9 @@
     "unlock_error_invalid": "Invalid encryption key.",
 
     "admin_include_key_in_links": "Include encryption key in links",
+    "admin_encryption_key": "Encryption key",
+    "admin_encryption_key_hint": "Share this key separately when links do not include it. Guests need it to unlock the list.",
+    "admin_copy_key": "Copy encryption key",
     "admin_key_reveal_title": "Save your encryption key",
     "admin_key_reveal_text": "Your wishlist was upgraded to encrypted storage. Save this key — you will need it to access the list if the link does not include it.",
     "admin_key_reveal_hint": "Links on this page include the key by default. Uncheck the option below to share links without the key.",
@@ -56,8 +59,6 @@
     "admin_link": "Admin link",
     "admin_link_hint": "keep this private!",
     "admin_expires_on": "This wishlist will be automatically deleted on",
-    "admin_extend_btn": "Extend by {days} days",
-    "admin_already_extended": "Already extended",
     "admin_settings": "Settings",
     "admin_show_buyers": "Show buyer names to all guests",
     "admin_show_buyers_hint": "When enabled, guests can see who reserved each wish instead of just \"Already planned by someone\".",
@@ -176,5 +177,5 @@
     "privacy_not_stored_accounts": "No user accounts, passwords, or login profiles for parents or guests.",
     "privacy_not_stored_tracking": "No analytics, advertising, or third-party tracking.",
     "privacy_retention_title": "Data retention",
-    "privacy_retention_text": "Active wishlists are automatically deleted after {days} days. Wishlists marked as done are deleted {done_days} days after completion. The parent can extend retention once."
+    "privacy_retention_text": "Active wishlists are automatically deleted after {days} days. Wishlists marked as done are deleted {done_days} days after completion."
 }

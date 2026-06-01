@@ -72,7 +72,6 @@ podman run -d \
 | `SMTP_TLS` | `true` | Use TLS for SMTP |
 | `WISHLIST_MAX_AGE_DAYS` | `548` | Days until an active wishlist is deleted automatically |
 | `DONE_WISHLIST_CLEANUP_DAYS` | `30` | Days until done wishlists are cleaned up |
-| `WISHLIST_EXTENSION_DAYS` | `90` | Extra days when the parent extends retention once |
 
 ## Caddy Reverse Proxy
 
