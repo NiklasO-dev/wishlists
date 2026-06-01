@@ -3,6 +3,8 @@ from urllib.parse import urlparse
 from fastapi import Request
 from fastapi.templating import Jinja2Templates
 
+from app.config import settings
+
 
 def domain_from_url(url: str) -> str:
     """Extract domain name from a URL, stripping www. prefix."""
@@ -31,6 +33,7 @@ class I18nTemplates(Jinja2Templates):
             context.setdefault("t", request.state.t)
         if hasattr(request.state, "lang"):
             context.setdefault("lang", request.state.lang)
+        context.setdefault("settings", settings)
         return super().TemplateResponse(request, name, context, **kwargs)
 
 

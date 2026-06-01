@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ t.share_page_title }}: {{ wishlist.title }}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-    <link rel="stylesheet" href="/static/style.css?v=9">
+    <link rel="stylesheet" href="/static/style.css?v=11">
     <script>
         (function() {
             var saved = localStorage.getItem('wishlist_theme');
@@ -115,10 +115,14 @@
         </nav>
     </header>
     <main class="container">
-        <a href="/list/admin/{{ wishlist.admin_token }}" class="back-link">← {{ t.share_back }}</a>
+        <a href="/list/admin/{{ wishlist.admin_token }}?key={{ encryption_key | urlencode }}" class="back-link">← {{ t.share_back }}</a>
 
         <article class="editor-controls">
             <header><h2>{{ t.share_page_title }}</h2></header>
+            <label>
+                <input type="checkbox" id="include-key-toggle" checked>
+                {{ t.share_include_key_in_qr }}
+            </label>
             <label for="custom-title">{{ t.share_title_label }}</label>
             <input type="text" id="custom-title" value="{{ wishlist.title }}" placeholder="{{ wishlist.title }}">
             <label for="additional-text">{{ t.share_additional_label }}</label>
@@ -133,14 +137,14 @@
             <div class="qr-section">
                 <div id="qr-loader" aria-busy="true" class="qr-loader">{{ t.share_qr_loading }}</div>
                 <div id="qr-container" style="display:none;"></div>
-                <p class="guest-url">{{ guest_url }}</p>
+                <p class="guest-url" id="guest-url-display">{{ guest_url_with_key }}</p>
             </div>
         </div>
     </main>
-    <footer class="container">
-        <small>{{ t.site_tagline }}</small>
-    </footer>
+    {% include "partials/site_footer.html" %}
+    {% include "partials/privacy_dialog.html" %}
 
+    <script src="/static/app.js?v=2"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
     <script>
         (function() {
@@ -160,21 +164,37 @@
             });
 
             // QR Code generation
-            var guestUrl = '{{ guest_url }}';
-            var qr = qrcode(0, 'M');
-            qr.addData(guestUrl);
-            qr.make();
+            var guestUrlWithKey = '{{ guest_url_with_key }}';
+            var guestUrlWithoutKey = '{{ guest_url_without_key }}';
+            var currentGuestUrl = guestUrlWithKey;
 
-            var container = document.getElementById('qr-container');
+            function renderQr(url) {
+                var qr = qrcode(0, 'M');
+                qr.addData(url);
+                qr.make();
+                var container = document.getElementById('qr-container');
+                container.innerHTML = '';
+                var img = document.createElement('img');
+                img.src = qr.createDataURL(6, 4);
+                img.alt = 'QR Code';
+                img.style.width = '200px';
+                img.style.height = '200px';
+                container.appendChild(img);
+                document.getElementById('guest-url-display').textContent = url;
+            }
+
             var loader = document.getElementById('qr-loader');
-            var img = document.createElement('img');
-            img.src = qr.createDataURL(6, 4);
-            img.alt = 'QR Code';
-            img.style.width = '200px';
-            img.style.height = '200px';
-            container.appendChild(img);
+            renderQr(currentGuestUrl);
             loader.style.display = 'none';
-            container.style.display = '';
+            document.getElementById('qr-container').style.display = '';
+
+            var keyToggle = document.getElementById('include-key-toggle');
+            if (keyToggle) {
+                keyToggle.addEventListener('change', function() {
+                    currentGuestUrl = keyToggle.checked ? guestUrlWithKey : guestUrlWithoutKey;
+                    renderQr(currentGuestUrl);
+                });
+            }
 
             // Sync title input to print preview
             var titleInput = document.getElementById('custom-title');

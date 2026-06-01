@@ -227,3 +227,115 @@ form[style*="display:inline"] {
 .undo-timer {
     color: var(--pico-muted-color);
 }
+
+.how-to-use {
+    margin-top: 0;
+}
+
+.how-to-use summary {
+    cursor: pointer;
+}
+
+.site-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    align-items: center;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--pico-muted-border-color);
+}
+
+.site-footer small {
+    margin: 0;
+}
+
+.privacy-dialog {
+    max-width: 42rem;
+    width: calc(100% - 2rem);
+    padding: 0;
+    border: var(--pico-border-width) solid var(--pico-muted-border-color);
+    background: var(--pico-background-color);
+    color: var(--pico-color);
+}
+
+.privacy-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.55);
+}
+
+.privacy-dialog-content {
+    margin: 0;
+    max-height: min(85vh, 40rem);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.privacy-dialog-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--pico-background-color);
+    padding: 1rem 1.25rem 0.75rem;
+    margin: 0;
+    border-bottom: 1px solid var(--pico-muted-border-color);
+}
+
+.privacy-dialog-header h2 {
+    margin: 0;
+    flex: 1;
+    line-height: 1.3;
+}
+
+.privacy-dialog-close {
+    flex-shrink: 0;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    line-height: 1;
+    font-size: 1.25rem;
+    margin: 0;
+}
+
+.privacy-dialog-body {
+    padding: 1rem 1.25rem 0.5rem;
+}
+
+.privacy-dialog-body > p:first-child {
+    margin-top: 0;
+}
+
+.privacy-dialog-footer {
+    padding: 0.75rem 1.25rem 1rem;
+    margin: 0;
+    border-top: 1px solid var(--pico-muted-border-color);
+}
+
+.privacy-list dt {
+    font-weight: 600;
+    margin-top: 0.75rem;
+}
+
+.privacy-list dt code {
+    font-size: 0.9em;
+}
+
+.privacy-list dd {
+    margin-left: 0;
+    margin-bottom: 0;
+    color: var(--pico-muted-color);
+}
+
+.privacy-dialog-content h3,
+.privacy-dialog-content h4 {
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.privacy-dialog-content h4 {
+    font-size: 1rem;
+}

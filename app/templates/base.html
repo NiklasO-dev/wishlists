@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{{ t.site_name }}{% endblock %}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-    <link rel="stylesheet" href="/static/style.css?v=9">
+    <link rel="stylesheet" href="/static/style.css?v=11">
     <script>
         (function() {
             var saved = localStorage.getItem('wishlist_theme');
@@ -20,6 +20,7 @@
                 <li><a href="/"><strong>{{ t.nav_home }}</strong></a></li>
             </ul>
             <ul>
+                <li><a href="{% block nav_how_to_link %}/#how-to-use{% endblock %}">{{ t.nav_how_to_use }}</a></li>
                 <li>
                     <details class="dropdown lang-dropdown">
                         <summary>{{ t.lang_label }}</summary>
@@ -36,9 +37,9 @@
     <main class="container">
         {% block content %}{% endblock %}
     </main>
-    <footer class="container">
-        <small>{{ t.site_tagline }}</small>
-    </footer>
+    {% include "partials/site_footer.html" %}
+    {% include "partials/privacy_dialog.html" %}
+    <script src="/static/app.js?v=2"></script>
     <script>
         (function() {
             var btn = document.getElementById('theme-toggle');

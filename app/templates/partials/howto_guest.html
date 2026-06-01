@@ -1,0 +1,20 @@
+<details id="how-to-use" class="how-to-use">
+    <summary><strong>{{ t.home_use_title }} — {{ t.home_guests_title }}</strong></summary>
+    <ol>
+        <li>{{ t.home_guests_1 }}</li>
+        <li>{{ t.home_guests_2 }}</li>
+        <li>{{ t.home_guests_3 }}</li>
+        <li>{{ t.home_guests_4 }}</li>
+    </ol>
+</details>
+<script>
+(function() {
+    if (location.hash === '#how-to-use') {
+        var el = document.getElementById('how-to-use');
+        if (el && el.tagName === 'DETAILS') {
+            el.open = true;
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+})();
+</script>

@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% block nav_how_to_link %}#how-to-use{% endblock %}
+
 {% block title %}{{ wishlist.title }}{% endblock %}
 
 {% block content %}
@@ -58,12 +60,18 @@
 </article>
 {% endif %}
 
+<article>
+    {% include "partials/howto_guest.html" %}
+</article>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     var nameInput = document.getElementById('global-guest-name');
     var forms = document.querySelectorAll('.reserve-form');
     var storageKey = 'wishlist_guest_name';
     var guestToken = '{{ guest_token }}';
+    var encryptionKey = '{{ encryption_key }}';
+    var keyQuery = encryptionKey ? ('?key=' + encodeURIComponent(encryptionKey)) : '';
 
     var savedName = localStorage.getItem(storageKey);
     if (savedName) {
@@ -87,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            var action = form.getAttribute('action');
+            var action = form.getAttribute('action') + keyQuery;
             var formData = new FormData();
             formData.append('guest_name', name);
 
@@ -111,12 +119,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     startUndoTimer(undoContainer, guestToken, data.reservation_id, form);
                 } else {
                     // Fallback: reload page
-                    window.location.reload();
+                    window.location.href = window.location.pathname + keyQuery;
                 }
             })
             .catch(function() {
                 // On error, reload page
-                window.location.reload();
+                window.location.href = window.location.pathname + keyQuery;
             });
         });
     });
@@ -139,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 clearInterval(interval);
                 container.style.display = 'none';
                 // Reload to show updated state
-                window.location.reload();
+                window.location.href = window.location.pathname + keyQuery;
             }
         }, 1000);
 
@@ -150,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
             undoBtn.disabled = true;
             undoBtn.setAttribute('aria-busy', 'true');
 
-            fetch('/list/guest/' + token + '/reservations/' + reservationId + '/undo', {
+            fetch('/list/guest/' + token + '/reservations/' + reservationId + '/undo' + keyQuery, {
                 method: 'POST'
             })
             .then(function(response) { return response.json(); })
@@ -162,11 +170,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     submitBtn.disabled = false;
                     submitBtn.removeAttribute('aria-busy');
                 } else {
-                    window.location.reload();
+                    window.location.href = window.location.pathname + keyQuery;
                 }
             })
             .catch(function() {
-                window.location.reload();
+                window.location.href = window.location.pathname + keyQuery;
             });
         });
     }

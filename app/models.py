@@ -21,7 +21,10 @@ class Wishlist(Base):
     __tablename__ = "wishlists"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    title: Mapped[str] = mapped_column(String(255), nullable=False)
+    title: Mapped[str] = mapped_column(Text, nullable=False)
+    encryption_key_hash: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    key_reveal_pending: Mapped[bool] = mapped_column(default=False)
+    key_reveal_wrapped: Mapped[str | None] = mapped_column(Text, nullable=True)
     admin_token: Mapped[str] = mapped_column(
         String(64), unique=True, nullable=False, default=generate_token
     )
@@ -67,13 +70,13 @@ class Item(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     wishlist_id: Mapped[int] = mapped_column(ForeignKey("wishlists.id"), nullable=False)
-    title: Mapped[str] = mapped_column(String(255), nullable=False)
+    title: Mapped[str] = mapped_column(Text, nullable=False)
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
-    url: Mapped[str | None] = mapped_column(String(500), nullable=True)
-    url2: Mapped[str | None] = mapped_column(String(500), nullable=True)
-    url3: Mapped[str | None] = mapped_column(String(500), nullable=True)
-    image_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
-    price_hint: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    url: Mapped[str | None] = mapped_column(Text, nullable=True)
+    url2: Mapped[str | None] = mapped_column(Text, nullable=True)
+    url3: Mapped[str | None] = mapped_column(Text, nullable=True)
+    image_url: Mapped[str | None] = mapped_column(Text, nullable=True)
+    price_hint: Mapped[str | None] = mapped_column(Text, nullable=True)
     position: Mapped[int] = mapped_column(Integer, default=0)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), default=utcnow
@@ -102,7 +105,7 @@ class Reservation(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     item_id: Mapped[int] = mapped_column(ForeignKey("items.id"), nullable=False)
-    guest_name: Mapped[str] = mapped_column(String(255), nullable=False)
+    guest_name: Mapped[str] = mapped_column(Text, nullable=False)
     note: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), default=utcnow

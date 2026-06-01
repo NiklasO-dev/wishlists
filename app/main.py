@@ -9,6 +9,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 
 from app.database import engine
 from app.i18n import SUPPORTED_LANGUAGES, detect_language, get_translations
+from app.migrate import run_migrations
 from app.models import Base
 from app.routes import guest, parent_admin, public, site_admin
 
@@ -21,6 +22,7 @@ async def lifespan(app: FastAPI):
     # Create tables on startup
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+        await run_migrations(conn)
     logger.info("Database tables created/verified")
     yield
 

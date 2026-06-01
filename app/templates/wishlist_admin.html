@@ -3,6 +3,20 @@
 {% block title %}{{ t.admin_title_prefix }}: {{ wishlist.title }}{% endblock %}
 
 {% block content %}
+{% if show_key_reveal %}
+<article>
+    <header>
+        <h2>{{ t.admin_key_reveal_title }}</h2>
+    </header>
+    <p>{{ t.admin_key_reveal_text }}</p>
+    <div class="copy-row">
+        <input type="text" value="{{ encryption_key }}" readonly id="revealed-key">
+        <button type="button" class="copy-btn outline secondary" data-url="{{ encryption_key }}" title="Copy key">📋</button>
+    </div>
+    <p><small>{{ t.admin_key_reveal_hint }}</small></p>
+</article>
+{% endif %}
+
 {% if wishlist.is_done %}
 <article>
     <header>
@@ -22,6 +36,7 @@
             <details>
                 <summary>{{ t.admin_edit_title }}</summary>
                 <form method="post" action="/list/admin/{{ wishlist.admin_token }}/title">
+                    <input type="hidden" name="key" value="{{ encryption_key }}">
                     <label for="title">
                         {{ t.admin_new_title }}
                         <input type="text" id="title" name="title" value="{{ wishlist.title }}" required maxlength="255">
@@ -31,35 +46,45 @@
             </details>
         </div>
         <div class="admin-header-links">
+            <label>
+                <input type="checkbox" id="include-key-toggle" checked>
+                {{ t.admin_include_key_in_links }}
+            </label>
             <label><strong>{{ t.admin_guest_link }}</strong> ({{ t.admin_guest_link_hint }})</label>
             <div class="copy-row">
-                <input type="text" value="{{ guest_url }}" readonly>
-                <button type="button" class="copy-btn outline secondary" data-url="{{ guest_url }}" title="Copy link">📋</button>
+                <input type="text" id="guest-url-input" value="{{ guest_url_with_key }}" readonly
+                       data-url-with-key="{{ guest_url_with_key }}"
+                       data-url-without-key="{{ guest_url_without_key }}">
+                <button type="button" class="copy-btn outline secondary" data-target="guest-url-input" title="Copy link">📋</button>
             </div>
             <label><strong>{{ t.admin_link }}</strong> ({{ t.admin_link_hint }})</label>
             <div class="copy-row">
-                <input type="text" value="{{ admin_url }}" readonly>
-                <button type="button" class="copy-btn outline secondary" data-url="{{ admin_url }}" title="Copy link">📋</button>
+                <input type="text" id="admin-url-input" value="{{ admin_url_with_key }}" readonly
+                       data-url-with-key="{{ admin_url_with_key }}"
+                       data-url-without-key="{{ admin_url_without_key }}">
+                <button type="button" class="copy-btn outline secondary" data-target="admin-url-input" title="Copy link">📋</button>
             </div>
         </div>
     </div>
     <p><small>{{ t.admin_expires_on }} <strong>{{ expires_at.strftime('%d.%m.%Y') }}</strong>.
     {% if not wishlist.deletion_extended %}
     <form method="post" action="/list/admin/{{ wishlist.admin_token }}/extend" style="display:inline;">
+        <input type="hidden" name="key" value="{{ encryption_key }}">
         <button type="submit" class="outline secondary" style="display:inline; padding: 0.2rem 0.5rem; font-size: 0.8rem;">{{ t.admin_extend_btn.replace('{days}', settings.wishlist_extension_days|string) }}</button>
     </form>
     {% else %}
     ({{ t.admin_already_extended }})
     {% endif %}
     </small></p>
-    <a href="/list/admin/{{ wishlist.admin_token }}/export" target="_blank" class="outline secondary" role="button" style="padding: 0.3rem 0.7rem; font-size: 0.8rem;">{{ t.admin_export_btn }} ↗</a>
-    <a href="/list/admin/{{ wishlist.admin_token }}/share" class="outline secondary" role="button" style="padding: 0.3rem 0.7rem; font-size: 0.8rem;">{{ t.admin_share_btn }}</a>
+    <a href="/list/admin/{{ wishlist.admin_token }}/export?key={{ encryption_key | urlencode }}" target="_blank" class="outline secondary" role="button" style="padding: 0.3rem 0.7rem; font-size: 0.8rem;">{{ t.admin_export_btn }} ↗</a>
+    <a href="/list/admin/{{ wishlist.admin_token }}/share?key={{ encryption_key | urlencode }}" class="outline secondary" role="button" style="padding: 0.3rem 0.7rem; font-size: 0.8rem;">{{ t.admin_share_btn }}</a>
 </article>
 
 <!-- Settings -->
 <article>
     <header><h2>{{ t.admin_settings }}</h2></header>
     <form method="post" action="/list/admin/{{ wishlist.admin_token }}/toggle-show-buyers">
+        <input type="hidden" name="key" value="{{ encryption_key }}">
         <label>
             <input type="checkbox" name="show_buyers" {{ "checked" if wishlist.show_buyers_to_guests else "" }} onchange="this.form.submit()">
             {{ t.admin_show_buyers }}
@@ -72,6 +97,7 @@
 <article>
     <header><h2>{{ t.admin_add_item }}</h2></header>
     <form method="post" action="/list/admin/{{ wishlist.admin_token }}/items">
+        <input type="hidden" name="key" value="{{ encryption_key }}">
         <div class="grid">
             <label for="item_title">
                 {{ t.admin_item_name }} *
@@ -135,6 +161,7 @@
                 <span class="reservation-row">
                     <span>{{ res.guest_name }}</span>
                     <form method="post" action="/list/admin/{{ wishlist.admin_token }}/reservations/{{ res.id }}/delete">
+                        <input type="hidden" name="key" value="{{ encryption_key }}">
                         <button type="submit" class="outline secondary remove-btn">✕</button>
                     </form>
                 </span>
@@ -149,6 +176,7 @@
         <details>
             <summary>{{ t.admin_edit_item }}</summary>
             <form method="post" action="/list/admin/{{ wishlist.admin_token }}/items/{{ item.id }}/edit">
+                <input type="hidden" name="key" value="{{ encryption_key }}">
                 <label>{{ t.admin_item_name }} <input type="text" name="title" value="{{ item.title }}" required></label>
                 <label>{{ t.admin_description }} <textarea name="description" rows="2">{{ item.description or '' }}</textarea></label>
                 <div class="grid">
@@ -161,12 +189,14 @@
             </form>
         </details>
         <form method="post" action="/list/admin/{{ wishlist.admin_token }}/items/{{ item.id }}/delete">
+            <input type="hidden" name="key" value="{{ encryption_key }}">
             <button type="submit" class="outline contrast">{{ t.admin_delete_item }}</button>
         </form>
     </article>
     {% endfor %}
     </div>
     <form id="reorder-form" method="post" action="/list/admin/{{ wishlist.admin_token }}/items/reorder" style="display:none;">
+        <input type="hidden" name="key" value="{{ encryption_key }}">
         <input type="hidden" name="order" id="reorder-input">
     </form>
     {% else %}
@@ -179,6 +209,7 @@
     <header><h2>{{ t.admin_finish_title }}</h2></header>
     <p>{{ t.admin_finish_text }}</p>
     <form method="post" action="/list/admin/{{ wishlist.admin_token }}/done">
+        <input type="hidden" name="key" value="{{ encryption_key }}">
         <button type="submit" class="contrast">{{ t.admin_mark_done }}</button>
     </form>
     <hr>
@@ -210,13 +241,35 @@ document.addEventListener('DOMContentLoaded', function() {
     // Copy buttons
     document.querySelectorAll('.copy-btn').forEach(function(btn) {
         btn.addEventListener('click', function() {
-            var url = btn.getAttribute('data-url');
+            var url;
+            if (btn.hasAttribute('data-target')) {
+                url = document.getElementById(btn.getAttribute('data-target')).value;
+            } else {
+                url = btn.getAttribute('data-url');
+            }
             navigator.clipboard.writeText(url).then(function() {
                 btn.textContent = '✓';
                 setTimeout(function() { btn.textContent = '📋'; }, 1500);
             });
         });
     });
+
+    // Link key toggle
+    var keyToggle = document.getElementById('include-key-toggle');
+    if (keyToggle) {
+        function updateLinkUrls() {
+            var includeKey = keyToggle.checked;
+            ['guest-url-input', 'admin-url-input'].forEach(function(id) {
+                var input = document.getElementById(id);
+                if (input) {
+                    input.value = includeKey
+                        ? input.getAttribute('data-url-with-key')
+                        : input.getAttribute('data-url-without-key');
+                }
+            });
+        }
+        keyToggle.addEventListener('change', updateLinkUrls);
+    }
 
     // Drag-and-drop sorting
     var sortableContainer = document.getElementById('sortable-items');

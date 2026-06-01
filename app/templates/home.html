@@ -21,20 +21,25 @@
             <small>{{ t.home_field_email_hint }}</small>
         </label>
 
+        <label for="encryption_key">
+            {{ t.home_field_key }}
+            <input type="text" id="encryption_key" name="encryption_key" placeholder="{{ t.home_field_key_placeholder }}" maxlength="255" autocomplete="off">
+            <small>{{ t.home_field_key_hint }}</small>
+        </label>
+
         <button type="submit">{{ t.home_submit }}</button>
     </form>
 </article>
 
-<article>
+<article id="how-to-use">
     <header>
-        <h2>{{ t.home_how_title }}</h2>
+        <h2>{{ t.home_use_title }}</h2>
     </header>
-    <ol>
-        <li><strong>{{ t.home_step_1_label }}</strong> — {{ t.home_step_1 }}</li>
-        <li><strong>{{ t.home_step_2_label }}</strong> — {{ t.home_step_2 }}</li>
-        <li><strong>{{ t.home_step_3_label }}</strong> — {{ t.home_step_3 }}</li>
-        <li><strong>{{ t.home_step_4_label }}</strong> — {{ t.home_step_4 }}</li>
-    </ol>
+
+    {% include "partials/howto_parents.html" %}
+    {% include "partials/howto_guest_section.html" %}
+
     <p><small>{{ t.home_privacy_note }}</small></p>
+    <p><small>{{ t.home_encryption_note }}</small></p>
 </article>
 {% endblock %}
