@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design 2 — Clear &amp; Calm · Emma's Birthday</title>
+  <style>
+    :root {
+      --bg: #f0f4f8;
+      --surface: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --success: #059669;
+      --warning-bg: #fef3c7;
+      --warning-text: #92400e;
+      --radius: 12px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      font-size: 1.125rem;
+      line-height: 1.65;
+      color: var(--text);
+      background: var(--bg);
+    }
+    .wrap { max-width: 40rem; margin: 0 auto; padding: 1rem 1rem 3rem; }
+    header.top {
+      background: var(--surface);
+      padding: 1rem 1.25rem;
+      border-radius: var(--radius);
+      margin-bottom: 1.25rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    header.top h1 { margin: 0; font-size: 1.75rem; font-weight: 600; }
+    header.top p { margin: 0.5rem 0 0; color: var(--muted); font-size: 1.05rem; }
+    .step-strip {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .step-strip .step {
+      flex: 1;
+      min-width: 5rem;
+      text-align: center;
+      background: var(--surface);
+      padding: 0.75rem 0.5rem;
+      border-radius: var(--radius);
+      font-size: 0.95rem;
+      border: 2px solid transparent;
+    }
+    .step-strip .step.active {
+      border-color: var(--primary);
+      font-weight: 600;
+    }
+    .step-num {
+      display: block;
+      font-size: 1.5rem;
+      color: var(--primary);
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .panel {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .panel label {
+      display: block;
+      font-weight: 600;
+      font-size: 1.15rem;
+      margin-bottom: 0.5rem;
+    }
+    .panel input {
+      width: 100%;
+      font-size: 1.2rem;
+      padding: 0.85rem 1rem;
+      border: 2px solid #cbd5e1;
+      border-radius: 8px;
+    }
+    .panel input:focus {
+      outline: 3px solid #93c5fd;
+      border-color: var(--primary);
+    }
+    .gift {
+      border-left: 4px solid var(--primary);
+      padding-left: 1rem;
+    }
+    .gift h2 { margin: 0 0 0.25rem; font-size: 1.3rem; font-weight: 600; }
+    .meta { color: var(--muted); font-size: 1rem; margin-bottom: 0.75rem; }
+    .status {
+      background: var(--warning-bg);
+      color: var(--warning-text);
+      padding: 0.5rem 0.85rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      margin: 0.75rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .status::before { content: "✓"; font-size: 1.2rem; }
+    .links { margin: 0.75rem 0; }
+    .links a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.35rem 0;
+      display: inline-block;
+      min-height: 2.75rem;
+      line-height: 2.75rem;
+    }
+    .links a:hover { text-decoration: underline; }
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      min-height: 3.25rem;
+      font-size: 1.15rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+    .btn-primary { background: var(--success); color: #fff; }
+    .btn-primary:hover { filter: brightness(1.05); }
+    .btn-muted { background: #e2e8f0; color: #94a3b8; cursor: not-allowed; }
+    .floating-help {
+      position: sticky;
+      bottom: 1rem;
+      background: var(--text);
+      color: #fff;
+      padding: 0.85rem 1.25rem;
+      border-radius: 999px;
+      text-align: center;
+      font-size: 1rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      margin-top: 2rem;
+    }
+    .design-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="design-label">Design idea 2: Clear &amp; Calm</p>
+
+    <header class="top">
+      <h1>Emma's 7th Birthday</h1>
+      <p>Reserve a gift so the family avoids duplicates. No account needed.</p>
+    </header>
+
+    <div class="step-strip" aria-label="Steps">
+      <div class="step active"><span class="step-num">1</span>Your name</div>
+      <div class="step"><span class="step-num">2</span>Pick a gift</div>
+      <div class="step"><span class="step-num">3</span>Confirm</div>
+    </div>
+
+    <section class="panel">
+      <label for="name">Step 1 — Your first name</label>
+      <input id="name" type="text" placeholder="How should we show your name?" autocomplete="name">
+    </section>
+
+    <section class="panel gift">
+      <h2>LEGO Friends Tree House</h2>
+      <p class="meta">Price hint: ~45 € · Pink and green set</p>
+      <div class="links">
+        <a href="#">Open shop website ↗</a>
+      </div>
+      <button type="button" class="btn btn-primary">
+        <span aria-hidden="true">🎁</span> I'll buy this!
+      </button>
+    </section>
+
+    <section class="panel gift">
+      <h2>“The Wild Garden” (book)</h2>
+      <p class="meta">~18 €</p>
+      <div class="status">Someone is already buying this</div>
+      <button type="button" class="btn btn-muted" disabled>Reserved</button>
+    </section>
+
+    <section class="panel gift">
+      <h2>Rain boots, size 32, yellow</h2>
+      <p class="meta">~25 €</p>
+      <div class="links">
+        <a href="#">Store option A ↗</a><br>
+        <a href="#">Store option B ↗</a>
+      </div>
+      <button type="button" class="btn btn-primary">
+        <span aria-hidden="true">🎁</span> I'll buy this!
+      </button>
+    </section>
+
+    <p class="floating-help">Questions? Call or message the parents who sent you this link.</p>
+  </div>
+</body>
+</html>
