@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design 4 — Plain &amp; Bold · Emma's Birthday</title>
+  <style>
+  /* WCAG AAA-oriented: high contrast, no decorative noise */
+    :root {
+      --black: #000000;
+      --white: #ffffff;
+      --gray: #333333;
+      --line: #000000;
+      --focus: #0047ab;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 20px;
+      line-height: 1.5;
+      color: var(--black);
+      background: var(--white);
+    }
+    .wrap { max-width: 36rem; margin: 0 auto; padding: 1rem; }
+    .banner {
+      border: 3px solid var(--black);
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .banner h1 {
+      margin: 0;
+      font-size: 1.6rem;
+      font-weight: bold;
+    }
+    .banner p { margin: 0.5rem 0 0; font-size: 1.1rem; }
+    .instructions {
+      border: 3px solid var(--black);
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem;
+      font-size: 1.1rem;
+    }
+    .instructions strong { display: block; font-size: 1.25rem; margin-bottom: 0.5rem; }
+  .instructions ol { margin: 0.5rem 0 0; padding-left: 1.35rem; }
+  .instructions li { margin: 0.35rem 0; }
+    .name-block {
+      margin-bottom: 2rem;
+    }
+    .name-block label {
+      display: block;
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+    .name-block input {
+      width: 100%;
+      font-size: 1.35rem;
+      padding: 1rem;
+      border: 3px solid var(--black);
+      min-height: 3.5rem;
+    }
+    .name-block input:focus {
+      outline: 4px solid var(--focus);
+      outline-offset: 2px;
+    }
+    .item {
+      border: 3px solid var(--black);
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .item h2 {
+      margin: 0 0 0.5rem;
+      font-size: 1.35rem;
+      font-weight: bold;
+    }
+    .item .desc { margin: 0.5rem 0; }
+    .reserved-box {
+      border: 3px solid var(--black);
+      background: var(--black);
+      color: var(--white);
+      padding: 0.75rem 1rem;
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin: 0.75rem 0;
+    }
+    .link-row a {
+      color: var(--focus);
+      font-size: 1.15rem;
+      font-weight: bold;
+      display: block;
+      padding: 0.65rem 0;
+      min-height: 3rem;
+    }
+    .action {
+      width: 100%;
+      min-height: 4rem;
+      font-size: 1.35rem;
+      font-weight: bold;
+      background: var(--black);
+      color: var(--white);
+      border: 3px solid var(--black);
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    .action:hover, .action:focus {
+      background: var(--white);
+      color: var(--black);
+      outline: 4px solid var(--focus);
+    }
+    .action:disabled {
+      background: #888;
+      border-color: #888;
+      color: #fff;
+      cursor: not-allowed;
+    }
+    .footer-note {
+      font-size: 1rem;
+      border-top: 3px solid var(--black);
+      padding-top: 1rem;
+      margin-top: 2rem;
+    }
+    .concept {
+      font-size: 0.9rem;
+      color: var(--gray);
+      margin-bottom: 1rem;
+    }
+    @media (min-width: 480px) {
+      body { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="concept">Design idea 4: Plain &amp; Bold (accessibility-first)</p>
+
+    <div class="banner">
+      <h1>Emma's 7th Birthday — Gift list</h1>
+      <p>Choose one gift and press the black button.</p>
+    </div>
+
+    <div class="instructions">
+      <strong>How it works</strong>
+      <ol>
+        <li>Enter your first name.</li>
+        <li>Press “I WILL BUY THIS” on your gift.</li>
+        <li>To cancel, press UNDO within 60 seconds.</li>
+      </ol>
+    </div>
+
+    <div class="name-block">
+      <label for="name">YOUR FIRST NAME</label>
+      <input id="name" type="text" placeholder="Example: Hans" autocomplete="given-name">
+    </div>
+
+    <article class="item">
+      <h2>LEGO Friends Tree House</h2>
+      <p class="desc"><strong>Price:</strong> about 45 euros.</p>
+      <p class="desc">Pink and green set.</p>
+      <div class="link-row">
+        <a href="#">GO TO SHOP WEBSITE (opens new tab)</a>
+      </div>
+      <button type="button" class="action">I WILL BUY THIS</button>
+    </article>
+
+    <article class="item">
+      <h2>Book: The Wild Garden</h2>
+      <p class="desc"><strong>Price:</strong> about 18 euros.</p>
+      <div class="reserved-box">NOT AVAILABLE — someone else is buying this</div>
+      <button type="button" class="action" disabled>NOT AVAILABLE</button>
+    </article>
+
+    <article class="item">
+      <h2>Yellow rain boots, size 32</h2>
+      <p class="desc"><strong>Price:</strong> about 25 euros.</p>
+      <div class="link-row">
+        <a href="#">SHOP LINK 1</a>
+        <a href="#">SHOP LINK 2</a>
+      </div>
+      <button type="button" class="action">I WILL BUY THIS</button>
+    </article>
+
+    <p class="footer-note">
+      You do not need a password or account. If the page asks for a code, ask the parents.
+    </p>
+  </div>
+</body>
+</html>

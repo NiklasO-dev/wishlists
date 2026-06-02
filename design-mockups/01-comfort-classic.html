@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design 1 — Comfort Classic · Emma's Birthday</title>
+  <style>
+    :root {
+      --bg: #f7f3eb;
+      --paper: #fffdf8;
+      --ink: #1a1a1a;
+      --muted: #4a4a4a;
+      --accent: #2d6a4f;
+      --accent-hover: #1b4332;
+      --reserved: #b8860b;
+      --border: #d4cfc4;
+      --font: Georgia, "Times New Roman", serif;
+      --sans: "Segoe UI", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      font-size: 1.125rem;
+      line-height: 1.6;
+      color: var(--ink);
+      background: var(--bg);
+    }
+    .wrap { max-width: 42rem; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+    .site-bar {
+      font-family: var(--sans);
+      font-size: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+    .site-bar a { color: var(--accent); text-decoration: underline; }
+    h1 {
+      font-family: var(--font);
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 0 0 0.5rem;
+      line-height: 1.25;
+    }
+    .intro { color: var(--muted); margin: 0 0 1.5rem; font-size: 1.125rem; }
+    .steps {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem;
+      list-style: none;
+      counter-reset: step;
+    }
+    .steps li {
+      counter-increment: step;
+      padding: 0.35rem 0 0.35rem 2.5rem;
+      position: relative;
+    }
+    .steps li::before {
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      width: 1.75rem;
+      height: 1.75rem;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 1.75rem;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+    .name-box {
+      background: var(--paper);
+      border: 2px solid var(--accent);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .name-box label {
+      display: block;
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+    .name-box input {
+      width: 100%;
+      font-size: 1.25rem;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+    .name-box small { display: block; margin-top: 0.5rem; color: var(--muted); }
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .card h2 {
+      font-family: var(--font);
+      font-size: 1.35rem;
+      margin: 0 0 0.35rem;
+    }
+    .price { color: var(--muted); font-size: 1rem; }
+    .card p { margin: 0.5rem 0; }
+    .shop a {
+      color: var(--accent);
+      font-size: 1.05rem;
+      margin-right: 1rem;
+    }
+    .badge-reserved {
+      display: inline-block;
+      background: #fff8e6;
+      border: 1px solid var(--reserved);
+      color: #5c4a00;
+      padding: 0.35rem 0.75rem;
+      border-radius: 4px;
+      font-weight: 600;
+      margin: 0.5rem 0;
+    }
+    .btn-buy {
+      display: block;
+      width: 100%;
+      margin-top: 1rem;
+      padding: 1rem 1.25rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+      font-family: var(--sans);
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .btn-buy:hover { background: var(--accent-hover); }
+    .help {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: #eee9df;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    .tag {
+      display: inline-block;
+      background: #e8e4dc;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="site-bar">
+      <a href="#">← Gift wishlist</a> · <span>English</span>
+    </div>
+    <span class="tag">Design idea 1: Comfort Classic</span>
+    <h1>Emma's 7th Birthday</h1>
+    <p class="intro">Pick a gift below and tap the green button so no one else buys the same thing.</p>
+
+    <ol class="steps">
+      <li>Type your first name in the box below.</li>
+      <li>Choose a gift and press “I'll buy this!”</li>
+      <li>You can undo within one minute if you change your mind.</li>
+    </ol>
+
+    <div class="name-box">
+      <label for="name">Your first name</label>
+      <input id="name" type="text" placeholder="e.g. Grandma Rose" autocomplete="name">
+      <small>We only use this so the family knows who reserved each gift.</small>
+    </div>
+
+    <article class="card">
+      <h2>LEGO Friends Tree House</h2>
+      <span class="price">About 45 €</span>
+      <p>Emma asked for this set in pink and green.</p>
+      <p class="shop"><a href="#">View in shop ↗</a></p>
+      <button type="button" class="btn-buy">I'll buy this!</button>
+    </article>
+
+    <article class="card">
+      <h2>Illustrated children's book: “The Wild Garden”</h2>
+      <span class="price">About 18 €</span>
+      <p class="badge-reserved">Already planned by someone</p>
+      <button type="button" class="btn-buy" disabled style="opacity:0.5;cursor:not-allowed">I'll buy this!</button>
+    </article>
+
+    <article class="card">
+      <h2>Rain boots, size 32, yellow</h2>
+      <span class="price">About 25 €</span>
+      <p class="shop"><a href="#">Shop link 1 ↗</a> <a href="#">Shop link 2 ↗</a></p>
+      <button type="button" class="btn-buy">I'll buy this!</button>
+    </article>
+
+    <div class="help">
+      <strong>Need help?</strong> Ask the parents for the link or encryption key. You do not need to create an account.
+    </div>
+  </div>
+</body>
+</html>

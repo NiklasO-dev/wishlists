@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design 3 — Festive Family · Emma's Birthday</title>
+  <style>
+    :root {
+      --bg: linear-gradient(180deg, #fff5f5 0%, #fff9f0 50%, #ffffff 100%);
+      --card: #ffffff;
+      --red: #c1121f;
+      --red-soft: #e63946;
+      --gold: #bc6c25;
+      --green: #2d6a4f;
+      --text: #2b2d42;
+      --muted: #5c5f70;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 1.125rem;
+      line-height: 1.6;
+      color: var(--text);
+      background: #fff5f5;
+      background: var(--bg);
+      min-height: 100vh;
+    }
+    .hero {
+      text-align: center;
+      padding: 2rem 1.25rem 1.5rem;
+      background: linear-gradient(135deg, #c1121f 0%, #e63946 100%);
+      color: #fff;
+      border-radius: 0 0 2rem 2rem;
+      margin-bottom: 1.5rem;
+    }
+    .hero .bow { font-size: 2.5rem; line-height: 1; }
+    .hero h1 {
+      margin: 0.5rem 0 0.25rem;
+      font-size: 1.85rem;
+      font-weight: 800;
+    }
+    .hero p { margin: 0; opacity: 0.95; font-size: 1.1rem; max-width: 28rem; margin-inline: auto; }
+    .wrap { max-width: 42rem; margin: 0 auto; padding: 0 1rem 3rem; }
+    .name-card {
+      background: var(--card);
+      border-radius: 1.25rem;
+      padding: 1.5rem;
+      margin: -0.5rem 0 1.5rem;
+      box-shadow: 0 8px 24px rgba(193, 18, 31, 0.12);
+      border: 3px solid #ffd6a5;
+    }
+    .name-card label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--red);
+      margin-bottom: 0.65rem;
+    }
+    .name-card input {
+      width: 100%;
+      font-size: 1.25rem;
+      padding: 0.9rem 1rem;
+      border: 2px solid #f4a261;
+      border-radius: 1rem;
+      background: #fffbf7;
+    }
+    .hint {
+      text-align: center;
+      background: #fff;
+      border: 2px dashed #f4a261;
+      border-radius: 1rem;
+      padding: 0.85rem 1rem;
+      margin-bottom: 1.25rem;
+      font-size: 1.05rem;
+    }
+    .wish {
+      background: var(--card);
+      border-radius: 1.25rem;
+      padding: 1.35rem 1.5rem;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      position: relative;
+      overflow: hidden;
+    }
+    .wish::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--red), #f4a261, var(--green));
+    }
+    .wish h2 { margin: 0.25rem 0 0.35rem; font-size: 1.35rem; }
+    .price-tag {
+      display: inline-block;
+      background: #fff3cd;
+      color: var(--gold);
+      font-weight: 700;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      font-size: 0.95rem;
+    }
+    .wish p { margin: 0.5rem 0; color: var(--muted); }
+    .taken {
+      background: #d8f3dc;
+      color: var(--green);
+      font-weight: 700;
+      padding: 0.65rem 1rem;
+      border-radius: 0.75rem;
+      text-align: center;
+      margin: 0.75rem 0;
+      font-size: 1.05rem;
+    }
+    .shop-btn {
+      display: inline-block;
+      margin: 0.5rem 0.25rem 0.5rem 0;
+      padding: 0.5rem 1rem;
+      background: #f8f9fa;
+      border: 2px solid #dee2e6;
+      border-radius: 999px;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      min-height: 2.75rem;
+      line-height: 1.5;
+    }
+    .buy {
+      width: 100%;
+      margin-top: 0.75rem;
+      padding: 1.1rem;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #fff;
+      background: linear-gradient(180deg, var(--red-soft), var(--red));
+      border: none;
+      border-radius: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #9d0208;
+    }
+    .buy:active { transform: translateY(2px); box-shadow: 0 2px 0 #9d0208; }
+    .buy:disabled {
+      background: #ccc;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+    .ribbon {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 2rem;
+    }
+    .concept { text-align: center; font-size: 0.8rem; color: var(--muted); padding-top: 0.5rem; }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <div class="bow" aria-hidden="true">🎀</div>
+    <h1>Emma's 7th Birthday</h1>
+    <p>Help us make her day special — claim a gift so nothing is bought twice!</p>
+  </div>
+
+  <div class="wrap">
+    <p class="concept">Design idea 3: Festive Family</p>
+
+    <div class="name-card">
+      <label for="name"><span aria-hidden="true">👋</span> Who are you? (first name)</label>
+      <input id="name" type="text" placeholder="e.g. Aunt Maria" autocomplete="name">
+    </div>
+
+    <p class="hint">Tap <strong>I'll get this!</strong> on any gift you plan to buy. Changed your mind? You have 60 seconds to undo.</p>
+
+    <article class="wish">
+      <h2>LEGO Friends Tree House</h2>
+      <span class="price-tag">~45 €</span>
+      <p>Pink and green — Emma's favourite colours.</p>
+      <a class="shop-btn" href="#">🛒 See in shop</a>
+      <button type="button" class="buy">I'll get this! 🎁</button>
+    </article>
+
+    <article class="wish">
+      <h2>“The Wild Garden” — picture book</h2>
+      <span class="price-tag">~18 €</span>
+      <div class="taken">🎉 Already claimed — pick another gift</div>
+      <button type="button" class="buy" disabled>Already taken</button>
+    </article>
+
+    <article class="wish">
+      <h2>Yellow rain boots, size 32</h2>
+      <span class="price-tag">~25 €</span>
+      <a class="shop-btn" href="#">Shop A</a>
+      <a class="shop-btn" href="#">Shop B</a>
+      <button type="button" class="buy">I'll get this! 🎁</button>
+    </article>
+
+    <p class="ribbon">Made with love · No sign-up · Link from Emma's parents</p>
+  </div>
+</body>
+</html>
